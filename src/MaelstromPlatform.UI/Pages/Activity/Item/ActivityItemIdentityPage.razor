@@ -1,0 +1,9 @@
+﻿@page "/activity/{Id:guid}/identity"
+@using MaelstromPlatform.UI.Components.Services.Activity.Item
+@layout ServiceItemShell
+
+<ActivityItemIdentity Id="@Id" />
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+}

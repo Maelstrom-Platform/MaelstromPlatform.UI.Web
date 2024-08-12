@@ -1,0 +1,24 @@
+﻿@page "/system"
+
+@using MaelstromPlatform.UI.Components.Services.MPSystem
+
+<SystemDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "system" },
+        new MaelstromMenuItem { Caption = "Browse", Location = "system/browse" },
+        new MaelstromMenuItem { Caption = "New", Location = "system/new" },
+        new MaelstromMenuItem { Caption = "Map", Location = "system/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "System";
+        GlobalState.StateChanged.Invoke();
+    }
+}

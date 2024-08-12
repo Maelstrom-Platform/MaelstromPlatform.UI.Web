@@ -1,0 +1,23 @@
+﻿@page "/activity/{sysid:guid}"
+@using MaelstromPlatform.UI.Components.Services.Activity.Item
+@layout ServiceItemShell
+
+<ActivityItemDashboard Id="@sysid" />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+    [Parameter] public Guid sysid { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Items.Add(new MaelstromMenuItem { Caption = "Dashboard", Location = $"activity/{sysid}" });
+        Items.Add(new MaelstromMenuItem { Caption = "Identity", Location = $"activity/{sysid}/identity" });
+        Items.Add(new MaelstromMenuItem { Caption = "Error", Location = $"activity/{sysid}/error" });
+
+        GlobalState.ServiceItemMenuItems = Items;
+        GlobalState.ActiveService = "Activity";
+        GlobalState.StateChanged.Invoke();
+    }
+
+    private List<MaelstromMenuItem> Items { get; set; } = new();
+}

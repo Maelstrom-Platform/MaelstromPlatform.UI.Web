@@ -1,0 +1,9 @@
+﻿@page "/activity/{Id:guid}/error"
+@using MaelstromPlatform.UI.Components.Services.Activity.Item
+@layout ServiceItemShell
+
+<ActivityItemError Id="@Id" />
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+}

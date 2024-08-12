@@ -1,0 +1,24 @@
+﻿@page "/accounting"
+
+@using MaelstromPlatform.UI.Components.Services.Accounting
+
+<AccountingDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "accounting" },
+    new MaelstromMenuItem { Caption = "Browse", Location = "accounting/browse" },
+    new MaelstromMenuItem { Caption = "New", Location = "accounting/new" },
+    new MaelstromMenuItem { Caption = "Map", Location = "accounting/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Accounting";
+        GlobalState.StateChanged.Invoke();
+    }
+}

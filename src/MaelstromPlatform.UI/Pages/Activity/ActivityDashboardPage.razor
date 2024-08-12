@@ -1,0 +1,23 @@
+﻿@page "/activity"
+
+@using MaelstromPlatform.UI.Components.Services.Activity
+
+<ActivityDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "activity" },
+    new MaelstromMenuItem { Caption = "Browse", Location = "activity/browse" },
+    new MaelstromMenuItem { Caption = "Map", Location = "activity/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Activity";
+        GlobalState.StateChanged.Invoke();
+    }
+}

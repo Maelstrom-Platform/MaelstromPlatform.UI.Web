@@ -1,0 +1,86 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Components\Common\MaelstromFieldset.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.7" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="8.0.7" />
+    <PackageReference Include="Radzen.Blazor" Version="5.0.4" />
+    <PackageReference Include="System.Text.Json" Version="8.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\Common\MaelstromFieldset.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\Common\MaelstromFieldset.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Components\Common\MaelstromFieldset.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pages\Accounting\Item\" />
+    <Folder Include="Pages\Administration\Item\" />
+    <Folder Include="Pages\Analytics\Item\" />
+    <Folder Include="Pages\AuditLog\Item\" />
+    <Folder Include="Pages\Backlog\Item\" />
+    <Folder Include="Pages\Build Note\Item\" />
+    <Folder Include="Pages\Build\Item\" />
+    <Folder Include="Pages\Calendar\Item\" />
+    <Folder Include="Pages\Communication\Item\" />
+    <Folder Include="Pages\Component\Item\" />
+    <Folder Include="Pages\Configuration\Item\" />
+    <Folder Include="Pages\CustomerCare\Item\" />
+    <Folder Include="Pages\Customer\Item\" />
+    <Folder Include="Pages\Dashboard\Item\" />
+    <Folder Include="Pages\DataDictionary\Item\" />
+    <Folder Include="Pages\Device\Item\" />
+    <Folder Include="Pages\Discussion\Item\" />
+    <Folder Include="Pages\Document\Item\" />
+    <Folder Include="Pages\Engineering\Item\" />
+    <Folder Include="Pages\Implementation\Item\" />
+    <Folder Include="Pages\Iteration\Item\" />
+    <Folder Include="Pages\License\Item\" />
+    <Folder Include="Pages\Location\Item\" />
+    <Folder Include="Pages\Marketing\Item\" />
+    <Folder Include="Pages\MPHelp\Item\" />
+    <Folder Include="Pages\MPRelease\Item\" />
+    <Folder Include="Pages\MPSystem\Item\" />
+    <Folder Include="Pages\Organization\Item\" />
+    <Folder Include="Pages\Person\Item\" />
+    <Folder Include="Pages\Product\Item\" />
+    <Folder Include="Pages\Project\Item\" />
+    <Folder Include="Pages\QualityAssurance\Item\" />
+    <Folder Include="Pages\ReleaseNote\Item\" />
+    <Folder Include="Pages\Report\Item\" />
+    <Folder Include="Pages\Requirement\Item\" />
+    <Folder Include="Pages\Roadmap\Item\" />
+    <Folder Include="Pages\Sales\Item\" />
+    <Folder Include="Pages\SourceCodeReview\Item\" />
+    <Folder Include="Pages\SourceCode\Item\" />
+    <Folder Include="Pages\Tag\Item\" />
+    <Folder Include="Pages\Task\Item\" />
+    <Folder Include="Pages\Team\Item\" />
+    <Folder Include="Pages\TestCase\Item\" />
+    <Folder Include="Pages\UserStory\Item\" />
+    <Folder Include="Pages\Vendor\Item\" />
+  </ItemGroup>
+
+</Project>

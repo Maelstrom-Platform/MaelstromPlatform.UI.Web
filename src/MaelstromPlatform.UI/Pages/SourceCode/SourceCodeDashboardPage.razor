@@ -1,0 +1,24 @@
+﻿@page "/source"
+
+@using MaelstromPlatform.UI.Components.Services.SourceCode
+
+<SourceCodeDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "source" },
+        new MaelstromMenuItem { Caption = "Browse", Location = "source/browse" },
+        new MaelstromMenuItem { Caption = "New", Location = "source/new" },
+        new MaelstromMenuItem { Caption = "Map", Location = "source/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Source Code";
+        GlobalState.StateChanged.Invoke();
+    }
+}

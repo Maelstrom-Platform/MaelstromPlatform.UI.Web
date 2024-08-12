@@ -1,0 +1,24 @@
+﻿@page "/analytics"
+
+@using MaelstromPlatform.UI.Components.Services.Analytics
+
+<AnalyticsDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "analytics" },
+        new MaelstromMenuItem { Caption = "Browse", Location = "analytics/browse" },
+        new MaelstromMenuItem { Caption = "New", Location = "analytics/new" },
+        new MaelstromMenuItem { Caption = "Map", Location = "analytics/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Analytics";
+        GlobalState.StateChanged.Invoke();
+    }
+}

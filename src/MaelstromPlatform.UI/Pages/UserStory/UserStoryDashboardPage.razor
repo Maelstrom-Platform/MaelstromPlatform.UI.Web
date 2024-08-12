@@ -1,0 +1,24 @@
+﻿@page "/story"
+
+@using MaelstromPlatform.UI.Components.Services.UserStory
+
+<UserStoryDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "story" },
+        new MaelstromMenuItem { Caption = "Browse", Location = "story/browse" },
+        new MaelstromMenuItem { Caption = "New", Location = "story/new" },
+        new MaelstromMenuItem { Caption = "Map", Location = "story/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "User Story";
+        GlobalState.StateChanged.Invoke();
+    }
+}

@@ -1,0 +1,9 @@
+﻿@page "/issue/{Id:guid}/project"
+@using MaelstromPlatform.UI.Components.Services.Issue.Item
+@layout ServiceItemShell
+
+<IssueItemProject Id="@Id" />
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+}

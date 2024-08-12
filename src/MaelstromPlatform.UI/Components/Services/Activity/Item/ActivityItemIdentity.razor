@@ -1,0 +1,114 @@
+﻿@using System.Text
+@using Microsoft.AspNetCore.JsonPatch
+@using Newtonsoft.Json
+@inject HttpClient Http
+
+<RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" Wrap="FlexWrap.NoWrap">
+    @if (IsLoading)
+    {
+        <RadzenProgressBar ProgressBarStyle="ProgressBarStyle.Primary" Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+    }
+    else
+    {
+        <EditForm Model="ActivityData" OnValidSubmit="SaveAsync" FormName="ActivityIdentity">
+            <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.NoWrap">
+                <RadzenFieldset AllowCollapse="false" ExpandTitle="Identity" CollapseTitle="Identity" ExpandAriaLabel="Identity" CollapseAriaLabel="Identity">
+                    <HeaderTemplate>
+                        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.25rem">
+                            <RadzenIcon Icon="account_circle" /><b>Identity</b>
+                        </RadzenStack>
+                    </HeaderTemplate>
+                    <ChildContent>
+                        <RadzenRow>
+                            <RadzenColumn Size="12">
+                                <RadzenFormField AllowFloatingLabel="false" Text="Slug" Variant="Variant.Outlined" Style="width: 100%; margin-bottom: 15px;">
+                                    <ChildContent>
+                                        <RadzenTextBox @bind-Value="@ActivityData.Slug" MaxLength="50" />
+                                    </ChildContent>
+                                    <Helper>
+                                        <RadzenText TextStyle="TextStyle.Caption">Required - 50 Characters Maximum</RadzenText>
+                                    </Helper>
+                                </RadzenFormField>
+                            </RadzenColumn>
+                        </RadzenRow>
+                        <RadzenRow>
+                            <RadzenColumn Size="12">
+                                <RadzenFormField AllowFloatingLabel="false" Text="Brief Summary" Variant="Variant.Outlined" Style="width: 100%; margin-bottom: 15px;">
+                                    <ChildContent>
+                                        <RadzenTextBox @bind-Value="@ActivityData.SummaryBrief" MaxLength="72" />
+                                    </ChildContent>
+                                    <Helper>
+                                        <RadzenText TextStyle="TextStyle.Caption">Required - 72 Characters Maximum</RadzenText>
+                                    </Helper>
+                                </RadzenFormField>
+                            </RadzenColumn>
+                        </RadzenRow>
+                        <RadzenRow>
+                            <RadzenColumn Size="12">
+                                <RadzenFormField AllowFloatingLabel="false" Text="Long Summary" Variant="Variant.Outlined" Style="width: 100%; margin-bottom: 15px;">
+                                    <ChildContent>
+                                        <RadzenTextBox @bind-Value="@ActivityData.SummaryLong" MaxLength="128" />
+                                    </ChildContent>
+                                    <Helper>
+                                        <RadzenText TextStyle="TextStyle.Caption">Required - 128 Characters Maximum</RadzenText>
+                                    </Helper>
+                                </RadzenFormField>
+                            </RadzenColumn>
+                        </RadzenRow>
+                        <RadzenRow>
+                            <RadzenColumn Size="12">
+                                <RadzenFormField AllowFloatingLabel="false" Text="Description" Variant="Variant.Outlined" Style="width: 100%; margin-bottom: 15px;">
+                                    <ChildContent>
+                                        <RadzenHtmlEditor @bind-Value="@ActivityData.Description" />
+                                    </ChildContent>
+                                    <Helper>
+                                        <RadzenText TextStyle="TextStyle.Caption">Required - 128 Characters Maximum</RadzenText>
+                                    </Helper>
+                                </RadzenFormField>
+                            </RadzenColumn>
+                        </RadzenRow>
+                    </ChildContent>
+                </RadzenFieldset>
+                <RadzenRow>
+                    <RadzenColumn Size="2">
+                        <RadzenButton Style="width: 100%" ButtonType="ButtonType.Submit" ButtonStyle="ButtonStyle.Primary">Save</RadzenButton>
+                    </RadzenColumn>
+                </RadzenRow>
+            </RadzenStack>
+        </EditForm>
+    }
+</RadzenStack>
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+
+    private bool IsLoading { get; set; } = true;
+
+    private ActivityModel ActivityData = new();
+    private string Identifier { get; set; }
+
+    private async Task<ActivityModel> GetItemDetails()
+    {
+        var result = await Http.GetFromJsonAsync<ActivityModel>($"/api/activities/{Id}") ?? new ActivityModel();
+        return result;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        ActivityData = await GetItemDetails();
+        Identifier = ActivityData.Identifier;
+        await base.OnParametersSetAsync();
+        IsLoading = false;
+    }
+
+    private async Task<HttpResponseMessage> SaveAsync()
+    {
+        var patchDoc = new JsonPatchDocument<ActivityModel>();
+        patchDoc.Replace(slu => slu.Slug, ActivityData.Slug);
+        patchDoc.Replace(sb => sb.SummaryBrief, ActivityData.SummaryBrief);
+        patchDoc.Replace(sl => sl.SummaryLong, ActivityData.SummaryLong);
+        var serializedDoc = JsonConvert.SerializeObject(patchDoc);
+        var requestContent = new StringContent(serializedDoc, Encoding.UTF8, "application/json-patch+json");
+        return await Http.PatchAsync($"/api/activities/{ActivityData.SysId}", requestContent);
+    }
+}

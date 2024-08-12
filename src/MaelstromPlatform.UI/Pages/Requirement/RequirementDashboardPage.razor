@@ -1,0 +1,24 @@
+﻿@page "/requirement"
+
+@using MaelstromPlatform.UI.Components.Services.Requirement
+
+<RequirementDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "requirement" },
+    new MaelstromMenuItem { Caption = "Browse", Location = "requirement/browse" },
+    new MaelstromMenuItem { Caption = "New", Location = "requirement/new" },
+    new MaelstromMenuItem { Caption = "Map", Location = "requirement/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Requirement";
+        GlobalState.StateChanged.Invoke();
+    }
+}

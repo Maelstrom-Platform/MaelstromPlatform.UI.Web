@@ -1,0 +1,24 @@
+﻿@page "/audit"
+
+@using MaelstromPlatform.UI.Components.Services.AuditLog
+
+<AuditLogDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "audit" },
+        new MaelstromMenuItem { Caption = "Browse", Location = "audit/browse" },
+        new MaelstromMenuItem { Caption = "New", Location = "audit/new" },
+        new MaelstromMenuItem { Caption = "Map", Location = "audit/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Audit Log";
+        GlobalState.StateChanged.Invoke();
+    }
+}

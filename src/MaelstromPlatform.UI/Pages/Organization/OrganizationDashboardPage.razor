@@ -1,0 +1,24 @@
+﻿@page "/organization"
+
+@using MaelstromPlatform.UI.Components.Services.Organization
+
+<OrganizationDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "organization" },
+        new MaelstromMenuItem { Caption = "Browse", Location = "organization/browse" },
+        new MaelstromMenuItem { Caption = "New", Location = "organization/new" },
+        new MaelstromMenuItem { Caption = "Map", Location = "organization/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Organization";
+        GlobalState.StateChanged.Invoke();
+    }
+}

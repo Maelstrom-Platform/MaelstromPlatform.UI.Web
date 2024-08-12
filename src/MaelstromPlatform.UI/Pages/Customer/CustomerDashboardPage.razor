@@ -1,0 +1,24 @@
+﻿@page "/customer"
+
+@using MaelstromPlatform.UI.Components.Services.Customer
+
+<CustomerDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "customer" },
+    new MaelstromMenuItem { Caption = "Browse", Location = "customer/browse" },
+    new MaelstromMenuItem { Caption = "New", Location = "customer/new" },
+    new MaelstromMenuItem { Caption = "Map", Location = "customer/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Customer";
+        GlobalState.StateChanged.Invoke();
+    }
+}

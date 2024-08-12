@@ -1,0 +1,23 @@
+﻿@page "/license"
+@using MaelstromPlatform.UI.Components.Services.License
+
+<LicenseDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "license" },
+        new MaelstromMenuItem { Caption = "Browse", Location = "license/browse" },
+        new MaelstromMenuItem { Caption = "New", Location = "license/new" },
+        new MaelstromMenuItem { Caption = "Map", Location = "license/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "License";
+        GlobalState.StateChanged.Invoke();
+    }
+}

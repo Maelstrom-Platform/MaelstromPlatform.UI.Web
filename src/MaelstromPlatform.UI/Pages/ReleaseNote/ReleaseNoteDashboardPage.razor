@@ -1,0 +1,24 @@
+﻿@page "/releasenote"
+
+@using MaelstromPlatform.UI.Components.Services.ReleaseNote
+
+<ReleaseNoteDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "releasenote" },
+    new MaelstromMenuItem { Caption = "Browse", Location = "releasenote/browse" },
+    new MaelstromMenuItem { Caption = "New", Location = "releasenote/new" },
+    new MaelstromMenuItem { Caption = "Map", Location = "releasenote/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Release Note";
+        GlobalState.StateChanged.Invoke();
+    }
+}

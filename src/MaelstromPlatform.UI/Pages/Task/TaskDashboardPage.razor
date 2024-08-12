@@ -1,0 +1,24 @@
+﻿@page "/task"
+
+@using MaelstromPlatform.UI.Components.Services.Task
+
+<TaskDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "task" },
+        new MaelstromMenuItem { Caption = "Browse", Location = "task/browse" },
+        new MaelstromMenuItem { Caption = "New", Location = "task/new" },
+        new MaelstromMenuItem { Caption = "Map", Location = "task/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Task";
+        GlobalState.StateChanged.Invoke();
+    }
+}

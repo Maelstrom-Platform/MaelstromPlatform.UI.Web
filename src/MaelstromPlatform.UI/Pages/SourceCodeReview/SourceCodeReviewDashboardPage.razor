@@ -1,0 +1,24 @@
+﻿@page "/review"
+
+@using MaelstromPlatform.UI.Components.Services.SourceCodeReview
+
+<SourceCodeReviewDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "review" },
+        new MaelstromMenuItem { Caption = "Browse", Location = "review/browse" },
+        new MaelstromMenuItem { Caption = "New", Location = "review/new" },
+        new MaelstromMenuItem { Caption = "Map", Location = "review/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Source Code Review";
+        GlobalState.StateChanged.Invoke();
+    }
+}

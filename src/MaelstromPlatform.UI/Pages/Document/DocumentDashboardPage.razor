@@ -1,0 +1,24 @@
+﻿@page "/document"
+
+@using MaelstromPlatform.UI.Components.Services.Document
+
+<DocumentDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "document" },
+    new MaelstromMenuItem { Caption = "Browse", Location = "document/browse" },
+    new MaelstromMenuItem { Caption = "New", Location = "document/new" },
+    new MaelstromMenuItem { Caption = "Map", Location = "document/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Document";
+        GlobalState.StateChanged.Invoke();
+    }
+}

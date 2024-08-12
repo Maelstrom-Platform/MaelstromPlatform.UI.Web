@@ -1,0 +1,24 @@
+﻿@page "/backlog"
+
+@using MaelstromPlatform.UI.Components.Services.Backlog
+
+<BacklogDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "backlog" },
+        new MaelstromMenuItem { Caption = "Browse", Location = "backlog/browse" },
+        new MaelstromMenuItem { Caption = "New", Location = "backlog/new" },
+        new MaelstromMenuItem { Caption = "Map", Location = "backlog/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Backlog";
+        GlobalState.StateChanged.Invoke();
+    }
+}

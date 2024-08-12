@@ -1,0 +1,38 @@
+﻿@page "/issue/{Id:guid}"
+@using MaelstromPlatform.UI.Components.Services.Issue.Item
+@layout ServiceItemShell
+
+<IssueItemDashboard Id="@Id" />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+    [Parameter] public Guid Id { get; set; }
+
+    private string Org { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Items.Add(new MaelstromMenuItem { Caption = "Dashboard", Location = $"issue/{Id}" });
+        Items.Add(new MaelstromMenuItem { Caption = "Profile", Location = $"issue/{Id}/profile" });
+        Items.Add(new MaelstromMenuItem { Caption = "Identity", Location = $"issue/{Id}/identity" });
+        Items.Add(new MaelstromMenuItem { Caption = "Problem Statement", Location = $"issue/{Id}/problem" });
+        Items.Add(new MaelstromMenuItem { Caption = "Steps To Reproduce", Location = $"issue/{Id}/stepstoreproduce" });
+        Items.Add(new MaelstromMenuItem { Caption = "Work-Around", Location = $"issue/{Id}/workaround" });
+        Items.Add(new MaelstromMenuItem { Caption = "Origin", Location = $"issue/{Id}/origin" });
+        Items.Add(new MaelstromMenuItem { Caption = "Ownership", Location = $"issue/{Id}/owner" });
+        Items.Add(new MaelstromMenuItem { Caption = "Product", Location = $"issue/{Id}/product" });
+        Items.Add(new MaelstromMenuItem { Caption = "Project", Location = $"issue/{Id}/project" });
+        Items.Add(new MaelstromMenuItem { Caption = "Encounter", Location = $"issue/{Id}/encounter" });
+        Items.Add(new MaelstromMenuItem { Caption = "Impact", Location = $"issue/{Id}/impact" });
+        Items.Add(new MaelstromMenuItem { Caption = "Advocacy", Location = $"issue/{Id}/advocacy" });
+        Items.Add(new MaelstromMenuItem { Caption = "Status", Location = $"issue/{Id}/status" });
+        Items.Add(new MaelstromMenuItem { Caption = "Workflow", Location = $"issue/{Id}/workflow" });
+
+        Org = GlobalState.Organization;
+        GlobalState.ServiceItemMenuItems = Items;
+        GlobalState.ActiveService = "Issue";
+        GlobalState.StateChanged.Invoke();
+    }
+
+    private List<MaelstromMenuItem> Items { get; set; } = new();
+}

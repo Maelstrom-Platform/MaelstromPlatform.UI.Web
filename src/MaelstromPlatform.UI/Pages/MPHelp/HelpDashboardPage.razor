@@ -1,0 +1,24 @@
+﻿@page "/help"
+
+@using MaelstromPlatform.UI.Components.Services.Help
+
+<HelpDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "help" },
+        new MaelstromMenuItem { Caption = "Browse", Location = "help/browse" },
+        new MaelstromMenuItem { Caption = "New", Location = "help/new" },
+        new MaelstromMenuItem { Caption = "Map", Location = "help/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Help";
+        GlobalState.StateChanged.Invoke();
+    }
+}

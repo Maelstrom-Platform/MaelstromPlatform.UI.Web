@@ -1,0 +1,24 @@
+﻿@page "/dictionary"
+
+@using MaelstromPlatform.UI.Components.Services.DataDictionary
+
+<DataDictionaryDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "dictionary" },
+    new MaelstromMenuItem { Caption = "Browse", Location = "dictionary/browse" },
+    new MaelstromMenuItem { Caption = "New", Location = "dictionary/new" },
+    new MaelstromMenuItem { Caption = "Map", Location = "dictionary/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Data Dictionary";
+        GlobalState.StateChanged.Invoke();
+    }
+}

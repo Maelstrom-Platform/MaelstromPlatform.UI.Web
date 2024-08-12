@@ -1,0 +1,24 @@
+﻿@page "/device"
+
+@using MaelstromPlatform.UI.Components.Services.Device
+
+<DeviceDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "device" },
+    new MaelstromMenuItem { Caption = "Browse", Location = "device/browse" },
+    new MaelstromMenuItem { Caption = "New", Location = "device/new" },
+    new MaelstromMenuItem { Caption = "Map", Location = "device/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Device";
+        GlobalState.StateChanged.Invoke();
+    }
+}

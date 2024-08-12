@@ -1,0 +1,24 @@
+﻿@page "/configuration"
+
+@using MaelstromPlatform.UI.Components.Services.Configuration
+
+<ConfigurationDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "configuration" },
+        new MaelstromMenuItem { Caption = "Browse", Location = "configuration/browse" },
+        new MaelstromMenuItem { Caption = "New", Location = "configuration/new" },
+        new MaelstromMenuItem { Caption = "Map", Location = "configuration/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Configuration";
+        GlobalState.StateChanged.Invoke();
+    }
+}

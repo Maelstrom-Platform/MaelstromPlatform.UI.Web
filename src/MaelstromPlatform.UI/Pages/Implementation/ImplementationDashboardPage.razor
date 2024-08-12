@@ -1,0 +1,24 @@
+﻿@page "/implementation"
+
+@using MaelstromPlatform.UI.Components.Services.Implementation
+
+<ImplementationDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "implementation" },
+    new MaelstromMenuItem { Caption = "Browse", Location = "implementation/browse" },
+    new MaelstromMenuItem { Caption = "New", Location = "implementation/new" },
+    new MaelstromMenuItem { Caption = "Map", Location = "implementation/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Implementation";
+        GlobalState.StateChanged.Invoke();
+    }
+}

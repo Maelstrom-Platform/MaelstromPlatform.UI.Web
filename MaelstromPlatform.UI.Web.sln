@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35027.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5BC96DED-E206-4163-9072-F213B5AB7F65}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MaelstromPlatform.UI", "src\MaelstromPlatform.UI\MaelstromPlatform.UI.csproj", "{21E5FE76-D950-4926-B325-C021982B4762}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{1A768BFB-54A1-49D7-9AE8-46826F6DAFA4}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		AUTHORS.md = AUTHORS.md
+		ChangeLog.md = ChangeLog.md
+		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
+		CONTRIBUTING.md = CONTRIBUTING.md
+		COPYING.md = COPYING.md
+		INSTALL.md = INSTALL.md
+		NEWS.md = NEWS.md
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MaelstromPlatform", "MaelstromPlatform", "{8DD7FBD8-5194-4EF3-83FC-59F719EA981F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9F1465BD-D90F-4B04-B18D-5AA17C07A886}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MaelstromPlatform.UI.Web.Tests", "Tests\MaelstromPlatform.UI.Web.Tests\MaelstromPlatform.UI.Web.Tests.csproj", "{2748310B-2B39-4B0A-BDB1-BA7ADACF3380}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{21E5FE76-D950-4926-B325-C021982B4762}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21E5FE76-D950-4926-B325-C021982B4762}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21E5FE76-D950-4926-B325-C021982B4762}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21E5FE76-D950-4926-B325-C021982B4762}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2748310B-2B39-4B0A-BDB1-BA7ADACF3380}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2748310B-2B39-4B0A-BDB1-BA7ADACF3380}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2748310B-2B39-4B0A-BDB1-BA7ADACF3380}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2748310B-2B39-4B0A-BDB1-BA7ADACF3380}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{21E5FE76-D950-4926-B325-C021982B4762} = {5BC96DED-E206-4163-9072-F213B5AB7F65}
+		{8DD7FBD8-5194-4EF3-83FC-59F719EA981F} = {1A768BFB-54A1-49D7-9AE8-46826F6DAFA4}
+		{2748310B-2B39-4B0A-BDB1-BA7ADACF3380} = {9F1465BD-D90F-4B04-B18D-5AA17C07A886}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A3DAB879-486C-4D10-A2E3-6A270029DD93}
+	EndGlobalSection
+EndGlobal

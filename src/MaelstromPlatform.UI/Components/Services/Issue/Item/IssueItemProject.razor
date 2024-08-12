@@ -1,0 +1,83 @@
+﻿@using System.Text
+@using Microsoft.AspNetCore.JsonPatch
+@using Newtonsoft.Json
+@inject HttpClient Http
+
+<RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" Wrap="FlexWrap.NoWrap">
+    @if (IsLoading)
+    {
+        <RadzenProgressBar ProgressBarStyle="ProgressBarStyle.Primary" Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+    }
+    else
+    {
+        <EditForm Model="IssueData" OnValidSubmit="SaveAsync" FormName="IssueProject">
+        <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.NoWrap">
+        @* Product/Project *@
+        <RadzenFieldset AllowCollapse="true" ExpandTitle="ProductProject" CollapseTitle="ProductProject" ExpandAriaLabel="ProductProject" CollapseAriaLabel="ProductProject">
+            <HeaderTemplate>
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.25rem">
+                    <RadzenIcon Icon="face" /><b>Product&sol;Project</b>
+                </RadzenStack>
+            </HeaderTemplate>
+            <ChildContent>
+                <RadzenRow>
+                    <RadzenColumn Size="6">
+                        <RadzenFormField AllowFloatingLabel="false" Text="Primary Product" Variant="Variant.Outlined" Style="width: 100%">
+                            <RadzenDropDown @bind-Value="@TestPerson1" Data="@TestPeople" />
+                        </RadzenFormField>
+                    </RadzenColumn>
+                    <RadzenColumn Size="6">
+                        <RadzenFormField AllowFloatingLabel="false" Text="Primary Project" Variant="Variant.Outlined" Style="width: 100%">
+                            <RadzenDropDown @bind-Value="@TestPerson2" Data="@TestPeople" />
+                        </RadzenFormField>
+                    </RadzenColumn>
+                </RadzenRow>
+            </ChildContent>
+        </RadzenFieldset>
+        <RadzenRow>
+            <RadzenColumn Size="2">
+                <RadzenButton Style="width: 100%" ButtonType="ButtonType.Submit" ButtonStyle="ButtonStyle.Primary">Save</RadzenButton>
+            </RadzenColumn>
+        </RadzenRow>
+        </RadzenStack>
+        </EditForm>
+    }
+</RadzenStack>
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+
+    private bool IsLoading { get; set; } = true;
+
+    private IssueModel IssueData = new();
+    private string Identifier { get; set; }
+
+    private string[] TestPeople = ["P1", "P2", "P3"];
+    private string[] TestPerson1 = ["P1", "P2", "P3"];
+    private string[] TestPerson2 = ["P1", "P2", "P3"];
+
+    private async Task<IssueModel> GetItemDetails()
+    {
+        var result = await Http.GetFromJsonAsync<IssueModel>($"/api/issues/{Id}") ?? new IssueModel();
+        return result;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        IssueData = await GetItemDetails();
+        Identifier = IssueData.Identifier;
+        await base.OnParametersSetAsync();
+        IsLoading = false;
+    }
+
+    private async Task<HttpResponseMessage> SaveAsync()
+    {
+        var patchDoc = new JsonPatchDocument<IssueModel>();
+        patchDoc.Replace(slu => slu.Slug, IssueData.Slug);
+        patchDoc.Replace(sb => sb.SummaryBrief, IssueData.SummaryBrief);
+        patchDoc.Replace(sl => sl.SummaryLong, IssueData.SummaryLong);
+        var serializedDoc = JsonConvert.SerializeObject(patchDoc);
+        var requestContent = new StringContent(serializedDoc, Encoding.UTF8, "application/json-patch+json");
+        return await Http.PatchAsync($"/api/issues/{IssueData.SysId}", requestContent);
+    }
+}

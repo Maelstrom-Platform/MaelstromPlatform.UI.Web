@@ -1,0 +1,24 @@
+﻿@page "/quality"
+
+@using MaelstromPlatform.UI.Components.Services.QualityAssurance
+
+<QualityAssuranceDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "quality" },
+        new MaelstromMenuItem { Caption = "Browse", Location = "quality/browse" },
+        new MaelstromMenuItem { Caption = "New", Location = "quality/new" },
+        new MaelstromMenuItem { Caption = "Map", Location = "quality/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Quality Assurance";
+        GlobalState.StateChanged.Invoke();
+    }
+}

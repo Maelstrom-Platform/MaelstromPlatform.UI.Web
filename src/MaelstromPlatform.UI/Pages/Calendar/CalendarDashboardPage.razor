@@ -1,0 +1,24 @@
+﻿@page "/calendar"
+
+@using MaelstromPlatform.UI.Components.Services.Calendar
+
+<CalendarDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "calendar" },
+        new MaelstromMenuItem { Caption = "Browse", Location = "calendar/browse" },
+        new MaelstromMenuItem { Caption = "New", Location = "calendar/new" },
+        new MaelstromMenuItem { Caption = "Map", Location = "calendar/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Calendar";
+        GlobalState.StateChanged.Invoke();
+    }
+}

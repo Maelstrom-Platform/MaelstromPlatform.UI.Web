@@ -1,0 +1,78 @@
+﻿@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" Wrap="FlexWrap.NoWrap">
+    <RadzenText TextStyle="TextStyle.DisplayH4">New Issue</RadzenText>
+    <EditForm Model="Issue" OnValidSubmit="SaveAsync" FormName="IssueNew">
+        <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.NoWrap">
+            @* Identity *@
+            <RadzenFieldset AllowCollapse="false" ExpandTitle="Identity" CollapseTitle="Identity" ExpandAriaLabel="Identity" CollapseAriaLabel="Identity">
+                <HeaderTemplate>
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.25rem">
+                        <RadzenIcon Icon="account_circle" /><b>Identity</b>
+                    </RadzenStack>
+                </HeaderTemplate>
+                <ChildContent>
+                    <RadzenRow>
+                        <RadzenColumn Size="12">
+                            <RadzenFormField AllowFloatingLabel="false" Text="Slug" Variant="Variant.Outlined" Style="width: 100%; margin-bottom: 15px;">
+                                <ChildContent>
+                                    <RadzenTextBox @bind-Value="@Issue.Slug" MaxLength="50" />
+                                </ChildContent>
+                                <Helper>
+                                    <RadzenText TextStyle="TextStyle.Caption">Required - 50 Characters Maximum</RadzenText>
+                                </Helper>
+                            </RadzenFormField>
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow>
+                        <RadzenColumn Size="12">
+                            <RadzenFormField AllowFloatingLabel="false" Text="Brief Summary" Variant="Variant.Outlined" Style="width: 100%; margin-bottom: 15px;">
+                                <ChildContent>
+                                    <RadzenTextBox @bind-Value="@Issue.SummaryBrief" MaxLength="72" />
+                                </ChildContent>
+                                <Helper>
+                                    <RadzenText TextStyle="TextStyle.Caption">Required - 72 Characters Maximum</RadzenText>
+                                </Helper>
+                            </RadzenFormField>
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow>
+                        <RadzenColumn Size="12">
+                            <RadzenFormField AllowFloatingLabel="false" Text="Long Summary" Variant="Variant.Outlined" Style="width: 100%; margin-bottom: 15px;">
+                                <ChildContent>
+                                    <RadzenTextBox @bind-Value="@Issue.SummaryLong" MaxLength="128" />
+                                </ChildContent>
+                                <Helper>
+                                    <RadzenText TextStyle="TextStyle.Caption">Required - 128 Characters Maximum</RadzenText>
+                                </Helper>
+                            </RadzenFormField>
+                        </RadzenColumn>
+                    </RadzenRow>
+                </ChildContent>
+            </RadzenFieldset>
+            <RadzenRow>
+                <RadzenColumn Size="2">
+                    <RadzenButton Style="width: 100%" ButtonType="ButtonType.Submit" ButtonStyle="ButtonStyle.Primary">Save</RadzenButton>
+                </RadzenColumn>
+            </RadzenRow>
+        </RadzenStack>
+    </EditForm>
+</RadzenStack>
+
+@code {
+    private IssueModel Issue { get; set; } = new();
+
+    private async Task<HttpResponseMessage> SaveAsync()
+    {
+        var response = await Http.PostAsJsonAsync<IssueModel>("/api/issues", Issue);
+        var createdIssue = await response.Content.ReadFromJsonAsync<IssueModel>();
+
+        if (createdIssue != null)
+        {
+            Navigation.NavigateTo($"issue/{createdIssue.SysId}");
+        }
+        
+        return response;
+    }
+}

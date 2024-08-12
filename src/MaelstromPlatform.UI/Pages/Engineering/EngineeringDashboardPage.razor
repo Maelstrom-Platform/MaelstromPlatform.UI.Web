@@ -1,0 +1,24 @@
+﻿@page "/engineering"
+
+@using MaelstromPlatform.UI.Components.Services.Engineering
+
+<EngineeringDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "engineering" },
+    new MaelstromMenuItem { Caption = "Browse", Location = "engineering/browse" },
+    new MaelstromMenuItem { Caption = "New", Location = "engineering/new" },
+    new MaelstromMenuItem { Caption = "Map", Location = "engineering/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Engineering";
+        GlobalState.StateChanged.Invoke();
+    }
+}

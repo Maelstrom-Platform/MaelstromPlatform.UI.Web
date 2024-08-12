@@ -1,0 +1,24 @@
+﻿@page "/communication"
+
+@using MaelstromPlatform.UI.Components.Services.Communication
+
+<CommunicationDashboard />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+
+    private static readonly List<MaelstromMenuItem> Items =
+    [
+        new MaelstromMenuItem { Caption = "Dashboard", Location = "communication" },
+        new MaelstromMenuItem { Caption = "Browse", Location = "communication/browse" },
+        new MaelstromMenuItem { Caption = "New", Location = "communication/new" },
+        new MaelstromMenuItem { Caption = "Map", Location = "communication/map" }
+    ];
+
+    protected override void OnInitialized()
+    {
+        GlobalState.ServiceMenuItems = Items;
+        GlobalState.ActiveService = "Communication";
+        GlobalState.StateChanged.Invoke();
+    }
+}
