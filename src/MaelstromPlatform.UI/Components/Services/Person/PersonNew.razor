@@ -1,0 +1,80 @@
+﻿@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" Wrap="FlexWrap.NoWrap">
+    <RadzenText TextStyle="TextStyle.DisplayH4">New Person</RadzenText>
+    <EditForm Model="Person" OnValidSubmit="SaveAsync" FormName="PersonNew">
+        <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.NoWrap">
+            @* Identity *@
+            <RadzenFieldset AllowCollapse="false" ExpandTitle="Identity" CollapseTitle="Identity" ExpandAriaLabel="Identity" CollapseAriaLabel="Identity">
+                <HeaderTemplate>
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.25rem">
+                        <RadzenIcon Icon="account_circle" /><b>Identity</b>
+                    </RadzenStack>
+                </HeaderTemplate>
+                <ChildContent>
+                    <RadzenRow>
+                        <RadzenColumn Size="12">
+                            <RadzenFormField AllowFloatingLabel="false" Text="First Name" Variant="Variant.Outlined" Style="width: 100%; margin-bottom: 15px;">
+                                <ChildContent>
+                                    <RadzenTextBox @bind-Value="@Person.FirstName" MaxLength="50" />
+                                </ChildContent>
+                                <Helper>
+                                    <RadzenText TextStyle="TextStyle.Caption">Required - 50 Characters Maximum</RadzenText>
+                                </Helper>
+                            </RadzenFormField>
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow>
+                        <RadzenColumn Size="12">
+                            <RadzenFormField AllowFloatingLabel="false" Text="Middle Name" Variant="Variant.Outlined" Style="width: 100%; margin-bottom: 15px;">
+                                <ChildContent>
+                                    <RadzenTextBox @bind-Value="@Person.MiddleName" MaxLength="72" />
+                                </ChildContent>
+                                <Helper>
+                                    <RadzenText TextStyle="TextStyle.Caption">Required - 72 Characters Maximum</RadzenText>
+                                </Helper>
+                            </RadzenFormField>
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow>
+                        <RadzenColumn Size="12">
+                            <RadzenFormField AllowFloatingLabel="false" Text="Last Name" Variant="Variant.Outlined" Style="width: 100%; margin-bottom: 15px;">
+                                <ChildContent>
+                                    <RadzenTextBox @bind-Value="@Person.LastName" MaxLength="128" />
+                                </ChildContent>
+                                <Helper>
+                                    <RadzenText TextStyle="TextStyle.Caption">Required - 128 Characters Maximum</RadzenText>
+                                </Helper>
+                            </RadzenFormField>
+                        </RadzenColumn>
+                    </RadzenRow>
+                </ChildContent>
+            </RadzenFieldset>
+            <RadzenRow>
+                <RadzenColumn Size="2">
+                    <RadzenButton Style="width: 100%" ButtonType="ButtonType.Submit" ButtonStyle="ButtonStyle.Primary">Save</RadzenButton>
+                </RadzenColumn>
+            </RadzenRow>
+        </RadzenStack>
+    </EditForm>
+</RadzenStack>
+
+@code {
+    private PersonModel Person { get; set; } = new();
+
+    private async Task<HttpResponseMessage> SaveAsync()
+    {
+        Person.Identifier = "TEST";
+
+        var response = await Http.PostAsJsonAsync<PersonModel>("/api/people", Person);
+        var createdPerson = await response.Content.ReadFromJsonAsync<PersonModel>();
+
+        if (createdPerson != null)
+        {
+            Navigation.NavigateTo($"person/{createdPerson.SysId}");
+        }
+
+        return response;
+    }
+}

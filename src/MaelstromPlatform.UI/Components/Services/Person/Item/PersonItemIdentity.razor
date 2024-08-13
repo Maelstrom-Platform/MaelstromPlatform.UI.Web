@@ -1,0 +1,102 @@
+﻿@using System.Text
+@using Microsoft.AspNetCore.JsonPatch
+@using Newtonsoft.Json
+@inject HttpClient Http
+
+<RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" Wrap="FlexWrap.NoWrap">
+    @if (IsLoading)
+    {
+        <RadzenProgressBar ProgressBarStyle="ProgressBarStyle.Primary" Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+    }
+    else
+    {
+        <EditForm Model="PersonData" OnValidSubmit="SaveAsync" FormName="PersonIdentity">
+            <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.NoWrap">
+                <RadzenFieldset AllowCollapse="false" ExpandTitle="Identity" CollapseTitle="Identity" ExpandAriaLabel="Identity" CollapseAriaLabel="Identity">
+                    <HeaderTemplate>
+                        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.25rem">
+                            <RadzenIcon Icon="account_circle" /><b>Identity</b>
+                        </RadzenStack>
+                    </HeaderTemplate>
+                    <ChildContent>
+                        <RadzenRow>
+                            <RadzenColumn Size="12">
+                                <RadzenFormField AllowFloatingLabel="false" Text="First Name" Variant="Variant.Outlined" Style="width: 100%; margin-bottom: 15px;">
+                                    <ChildContent>
+                                        <RadzenTextBox @bind-Value="@PersonData.FirstName" MaxLength="50" />
+                                    </ChildContent>
+                                    <Helper>
+                                        <RadzenText TextStyle="TextStyle.Caption">Required - 50 Characters Maximum</RadzenText>
+                                    </Helper>
+                                </RadzenFormField>
+                            </RadzenColumn>
+                        </RadzenRow>
+                        <RadzenRow>
+                            <RadzenColumn Size="12">
+                                <RadzenFormField AllowFloatingLabel="false" Text="Middle Name" Variant="Variant.Outlined" Style="width: 100%; margin-bottom: 15px;">
+                                    <ChildContent>
+                                        <RadzenTextBox @bind-Value="@PersonData.MiddleName" MaxLength="72" />
+                                    </ChildContent>
+                                    <Helper>
+                                        <RadzenText TextStyle="TextStyle.Caption">Required - 72 Characters Maximum</RadzenText>
+                                    </Helper>
+                                </RadzenFormField>
+                            </RadzenColumn>
+                        </RadzenRow>
+                        <RadzenRow>
+                            <RadzenColumn Size="12">
+                                <RadzenFormField AllowFloatingLabel="false" Text="Last Name" Variant="Variant.Outlined" Style="width: 100%; margin-bottom: 15px;">
+                                    <ChildContent>
+                                        <RadzenTextBox @bind-Value="@PersonData.LastName" MaxLength="128" />
+                                    </ChildContent>
+                                    <Helper>
+                                        <RadzenText TextStyle="TextStyle.Caption">Required - 128 Characters Maximum</RadzenText>
+                                    </Helper>
+                                </RadzenFormField>
+                            </RadzenColumn>
+                        </RadzenRow>
+                    </ChildContent>
+                </RadzenFieldset>
+                <RadzenRow>
+                    <RadzenColumn Size="2">
+                        <RadzenButton Style="width: 100%" ButtonType="ButtonType.Submit" ButtonStyle="ButtonStyle.Primary">Save</RadzenButton>
+                    </RadzenColumn>
+                </RadzenRow>
+            </RadzenStack>
+        </EditForm>
+    }
+</RadzenStack>
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+
+    private bool IsLoading { get; set; } = true;
+
+    private PersonModel PersonData = new();
+    private string Identifier { get; set; }
+
+    private async Task<PersonModel> GetItemDetails()
+    {
+        var result = await Http.GetFromJsonAsync<PersonModel>($"/api/people/{Id}") ?? new PersonModel();
+        return result;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        PersonData = await GetItemDetails();
+        Identifier = PersonData.Identifier;
+        await base.OnParametersSetAsync();
+        IsLoading = false;
+    }
+
+    private async Task<HttpResponseMessage> SaveAsync()
+    {
+        var patchDoc = new JsonPatchDocument<PersonModel>();
+        patchDoc.Replace(slu => slu.FirstName, PersonData.FirstName);
+        patchDoc.Replace(sb => sb.MiddleName, PersonData.MiddleName);
+        patchDoc.Replace(sl => sl.LastName, PersonData.LastName);
+        var serializedDoc = JsonConvert.SerializeObject(patchDoc);
+        var requestContent = new StringContent(serializedDoc, Encoding.UTF8, "application/json-patch+json");
+        return await Http.PatchAsync($"/api/people/{PersonData.SysId}", requestContent);
+    }
+}

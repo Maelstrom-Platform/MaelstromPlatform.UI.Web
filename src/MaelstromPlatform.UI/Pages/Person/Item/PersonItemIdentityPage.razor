@@ -1,0 +1,9 @@
+﻿@page "/person/{Id:guid}/identity"
+@using MaelstromPlatform.UI.Components.Services.Person.Item
+@layout ServiceItemShell
+
+<PersonItemIdentity Id="@Id" />
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+}

@@ -1,0 +1,23 @@
+﻿@page "/person/{sysid:guid}"
+@using MaelstromPlatform.UI.Components.Services.Person.Item
+@layout ServiceItemShell
+
+<PersonItemDashboard sysid="@sysid" />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+    [Parameter] public Guid sysid { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Items.Add(new MaelstromMenuItem { Caption = "Dashboard", Location = $"person/{sysid}" });
+        Items.Add(new MaelstromMenuItem { Caption = "Identity", Location = $"person/{sysid}/identity" });
+        Items.Add(new MaelstromMenuItem { Caption = "Contact", Location = $"person/{sysid}/contact" });
+
+        GlobalState.ServiceItemMenuItems = Items;
+        GlobalState.ActiveService = "Person";
+        GlobalState.StateChanged.Invoke();
+    }
+
+    private List<MaelstromMenuItem> Items { get; set; } = new();
+}
