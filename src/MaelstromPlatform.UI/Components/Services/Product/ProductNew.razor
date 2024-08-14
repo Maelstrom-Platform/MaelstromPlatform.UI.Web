@@ -1,0 +1,56 @@
+﻿@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" Wrap="FlexWrap.NoWrap">
+    <RadzenText TextStyle="TextStyle.DisplayH4">New Product</RadzenText>
+    <EditForm Model="Product" OnValidSubmit="SaveAsync" FormName="ProductNew">
+        <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.NoWrap">
+            @* Identity *@
+            <RadzenFieldset AllowCollapse="false" ExpandTitle="Identity" CollapseTitle="Identity" ExpandAriaLabel="Identity" CollapseAriaLabel="Identity">
+                <HeaderTemplate>
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.25rem">
+                        <RadzenIcon Icon="account_circle" /><b>Identity</b>
+                    </RadzenStack>
+                </HeaderTemplate>
+                <ChildContent>
+                    <RadzenRow>
+                        <RadzenColumn Size="12">
+                            <RadzenFormField AllowFloatingLabel="false" Text="Title" Variant="Variant.Outlined" Style="width: 100%; margin-bottom: 15px;">
+                                <ChildContent>
+                                    <RadzenTextBox @bind-Value="@Product.Title" MaxLength="50" />
+                                </ChildContent>
+                                <Helper>
+                                    <RadzenText TextStyle="TextStyle.Caption">Required - 50 Characters Maximum</RadzenText>
+                                </Helper>
+                            </RadzenFormField>
+                        </RadzenColumn>
+                    </RadzenRow>
+                </ChildContent>
+            </RadzenFieldset>
+            <RadzenRow>
+                <RadzenColumn Size="2">
+                    <RadzenButton Style="width: 100%" ButtonType="ButtonType.Submit" ButtonStyle="ButtonStyle.Primary">Save</RadzenButton>
+                </RadzenColumn>
+            </RadzenRow>
+        </RadzenStack>
+    </EditForm>
+</RadzenStack>
+
+@code {
+    private ProductModel Product { get; set; } = new();
+
+    private async Task<HttpResponseMessage> SaveAsync()
+    {
+        Product.Identifier = "TEST";
+
+        var response = await Http.PostAsJsonAsync<ProductModel>("/api/products", Product);
+        var createdProduct = await response.Content.ReadFromJsonAsync<ProductModel>();
+
+        if (createdProduct != null)
+        {
+            Navigation.NavigateTo($"product/{createdProduct.SysId}");
+        }
+
+        return response;
+    }
+}

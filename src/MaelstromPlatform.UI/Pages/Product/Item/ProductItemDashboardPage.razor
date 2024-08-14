@@ -1,0 +1,22 @@
+﻿@page "/product/{sysid:guid}"
+@using MaelstromPlatform.UI.Components.Services.Product.Item
+@layout ServiceItemShell
+
+<ProductItemDashboard sysid="@sysid" />
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+    [Parameter] public Guid sysid { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Items.Add(new MaelstromMenuItem { Caption = "Dashboard", Location = $"product/{sysid}" });
+        Items.Add(new MaelstromMenuItem { Caption = "Identity", Location = $"product/{sysid}/identity" });
+
+        GlobalState.ServiceItemMenuItems = Items;
+        GlobalState.ActiveService = "Product";
+        GlobalState.StateChanged.Invoke();
+    }
+
+    private List<MaelstromMenuItem> Items { get; set; } = new();
+}

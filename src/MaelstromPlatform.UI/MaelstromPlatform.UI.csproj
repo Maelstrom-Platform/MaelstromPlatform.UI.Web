@@ -64,7 +64,6 @@
     <Folder Include="Pages\MPRelease\Item\" />
     <Folder Include="Pages\MPSystem\Item\" />
     <Folder Include="Pages\Organization\Item\" />
-    <Folder Include="Pages\Product\Item\" />
     <Folder Include="Pages\Project\Item\" />
     <Folder Include="Pages\QualityAssurance\Item\" />
     <Folder Include="Pages\ReleaseNote\Item\" />
