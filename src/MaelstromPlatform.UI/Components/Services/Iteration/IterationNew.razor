@@ -1,0 +1,56 @@
+﻿@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" Wrap="FlexWrap.NoWrap">
+    <RadzenText TextStyle="TextStyle.DisplayH4">New Iteration</RadzenText>
+    <EditForm Model="Iteration" OnValidSubmit="SaveAsync" FormName="IterationNew">
+        <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.NoWrap">
+            @* Identity *@
+            <RadzenFieldset AllowCollapse="false" ExpandTitle="Identity" CollapseTitle="Identity" ExpandAriaLabel="Identity" CollapseAriaLabel="Identity">
+                <HeaderTemplate>
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.25rem">
+                        <RadzenIcon Icon="account_circle" /><b>Identity</b>
+                    </RadzenStack>
+                </HeaderTemplate>
+                <ChildContent>
+                    <RadzenRow>
+                        <RadzenColumn Size="12">
+                            <RadzenFormField AllowFloatingLabel="false" Text="Name" Variant="Variant.Outlined" Style="width: 100%; margin-bottom: 15px;">
+                                <ChildContent>
+                                    <RadzenTextBox @bind-Value="@Iteration.Name" MaxLength="50" />
+                                </ChildContent>
+                                <Helper>
+                                    <RadzenText TextStyle="TextStyle.Caption">Required - 50 Characters Maximum</RadzenText>
+                                </Helper>
+                            </RadzenFormField>
+                        </RadzenColumn>
+                    </RadzenRow>
+                </ChildContent>
+            </RadzenFieldset>
+            <RadzenRow>
+                <RadzenColumn Size="2">
+                    <RadzenButton Style="width: 100%" ButtonType="ButtonType.Submit" ButtonStyle="ButtonStyle.Primary">Save</RadzenButton>
+                </RadzenColumn>
+            </RadzenRow>
+        </RadzenStack>
+    </EditForm>
+</RadzenStack>
+
+@code {
+    private IterationModel Iteration { get; set; } = new();
+
+    private async Task<HttpResponseMessage> SaveAsync()
+    {
+        Iteration.Identifier = "TEST";
+
+        var response = await Http.PostAsJsonAsync<IterationModel>("/api/iterations", Iteration);
+        var createdIteration = await response.Content.ReadFromJsonAsync<IterationModel>();
+
+        if (createdIteration != null)
+        {
+            Navigation.NavigateTo($"iteration/{createdIteration.SysId}");
+        }
+
+        return response;
+    }
+}

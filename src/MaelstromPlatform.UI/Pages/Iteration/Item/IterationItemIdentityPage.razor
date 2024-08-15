@@ -1,0 +1,9 @@
+﻿@page "/iteration/{Id:guid}/identity"
+@using MaelstromPlatform.UI.Components.Services.Iteration.Item
+@layout ServiceItemShell
+
+<IterationItemIdentity SysId="@Id"/>
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+}

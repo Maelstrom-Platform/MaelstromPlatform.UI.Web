@@ -1,0 +1,22 @@
+﻿@page "/iteration/{sysid:guid}"
+@using MaelstromPlatform.UI.Components.Services.Iteration.Item
+@layout ServiceItemShell
+
+<IterationItemDashboard sysid="@sysid"/>
+
+@code {
+    [CascadingParameter] public MaelstromState GlobalState { get; set; }
+    [Parameter] public Guid sysid { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Items.Add(new MaelstromMenuItem { Caption = "Dashboard", Location = $"iteration/{sysid}" });
+        Items.Add(new MaelstromMenuItem { Caption = "Identity", Location = $"iteration/{sysid}/identity" });
+
+        GlobalState.ServiceItemMenuItems = Items;
+        GlobalState.ActiveService = "Iteration";
+        GlobalState.StateChanged.Invoke();
+    }
+
+    private List<MaelstromMenuItem> Items { get; set; } = new();
+}

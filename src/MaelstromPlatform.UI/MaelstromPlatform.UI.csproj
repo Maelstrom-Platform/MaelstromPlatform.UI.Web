@@ -56,7 +56,6 @@
     <Folder Include="Pages\Document\Item\" />
     <Folder Include="Pages\Engineering\Item\" />
     <Folder Include="Pages\Implementation\Item\" />
-    <Folder Include="Pages\Iteration\Item\" />
     <Folder Include="Pages\License\Item\" />
     <Folder Include="Pages\Location\Item\" />
     <Folder Include="Pages\Marketing\Item\" />
