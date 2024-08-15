@@ -21,6 +21,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MaelstromPlatform", "MaelstromPlatform", "{8DD7FBD8-5194-4EF3-83FC-59F719EA981F}"
+	ProjectSection(SolutionItems) = preProject
+		Mission.md = Mission.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9F1465BD-D90F-4B04-B18D-5AA17C07A886}"
 EndProject
