@@ -66,13 +66,17 @@
     private async Task<HttpResponseMessage> SaveAsync()
     {
         var response = await Http.PostAsJsonAsync<IssueModel>("/api/issues", Issue);
-        var createdIssue = await response.Content.ReadFromJsonAsync<IssueModel>();
 
-        if (createdIssue != null)
+        if (response.IsSuccessStatusCode)
         {
-            Navigation.NavigateTo($"issue/{createdIssue.SysId}");
+            var createdIssue = await response.Content.ReadFromJsonAsync<IssueModel>();
+
+            if (createdIssue != null)
+            {
+                Navigation.NavigateTo($"issue/{createdIssue.SysId}");
+            }
         }
-        
+
         return response;
     }
 }
